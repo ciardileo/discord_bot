@@ -71,6 +71,12 @@ class Fun(commands.Cog):
         await ctx.send(self.king)
         await ctx.send('Aqui é a tropa do KONG porra')
 
+    # alien cesure command
+
+    @commands.command(aliases=['censure', 'csr'])
+    async def censura(self, ctx):
+        for time in range(1, 4):
+            await ctx.send('https://tenor.com/view/bailar-moves-alien-grooves-dance-gif-16520672')
 
 def setup(client):
     client.add_cog(Fun(client))
