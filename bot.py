@@ -24,6 +24,9 @@ async def on_ready():
     print(client.user.name)  # bot name
     print(client.user.id)  # id bot
 
+    channel = client.get_channel(813408123631960126)
+
+
 
 # commands
 # load a cog

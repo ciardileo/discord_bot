@@ -18,6 +18,13 @@ class Moderation(commands.Cog):
         await member.kick(reason=reason)
         await ctx.send(f'{member.mention} foi expulso')
 
+    # kick command error
+
+    @kick.error
+    async def kick_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send('Você não mencionou que membro quer expulsar')
+
     # ban members
 
     @has_permissions(ban_members=True)
@@ -25,6 +32,13 @@ class Moderation(commands.Cog):
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         await member.ban(reason=reason)
         await ctx.send(f'{member.mention} foi **B-A-N-I-D-O**')
+
+    # ban command error
+
+    @ban.error
+    async def ban_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send('Você não mencionou que membro quer banir')
 
     # unban members
 
@@ -40,6 +54,13 @@ class Moderation(commands.Cog):
                 await ctx.guild.unban(user)
                 await ctx.send(f'{user.name}#{user.discriminator} foi desbanido')
                 return
+
+    # unban command error
+
+    @unban.error
+    async def unban_error(self, ctx, error):
+        if isinstance(error, commands.MissingRequiredArgument):
+            await ctx.send('Você não mencionou que membro quer desbanir')
 
     # clear messages
 
