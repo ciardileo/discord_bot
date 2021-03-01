@@ -19,13 +19,13 @@ client = commands.Bot(command_prefix='>', intents=intents)
 @client.event
 async def on_ready():
     change_status.start()
-    # await client.change_presence(status=discord.Status.online, activity=discord.Game('Hello World! Ainda estou em progresso, confira com o ADM as funções que eu já tenho.'))
+    # await client.change_presence(status=discord.Status.online, activity=discord.Game('Hello World! Ainda estou em
+    # progresso, confira com o ADM as funções que eu já tenho.'))
     print('Online')
     print(client.user.name)  # bot name
     print(client.user.id)  # id bot
 
     channel = client.get_channel(813408123631960126)
-
 
 
 # commands
@@ -56,7 +56,8 @@ for filename in os.listdir('./cogs'):
 @tasks.loop(seconds=10)
 async def change_status():
     status = cycle(['Hello World! Ainda estou em progresso, confira com o ADM as funções que eu já tenho.',
-                    'Python. Sim essa é minha linguagem, ainda estou em progresso, continue testando para logo mais eu ser o melhor bot de **TODOS**'])
+                    'Python. Sim essa é minha linguagem, ainda estou em progresso, continue testando para logo mais '
+                    'eu ser o melhor bot de **TODOS**'])
 
     await client.change_presence(activity=discord.Game(next(status)))
 
