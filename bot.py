@@ -4,6 +4,7 @@ import os
 from itertools import cycle
 
 import discord
+from discord import Embed
 from discord.ext import commands, tasks
 
 # bot config
@@ -26,6 +27,15 @@ async def on_ready():
     print(client.user.id)  # id bot
 
     channel = client.get_channel(813408123631960126)
+    guild = client.get_guild(813408123154333776)
+
+    embed = Embed(title='O Pai Ta On Família!', description='Super Bot Opressor está online.', colour=0xFF0000)
+    fields = [('Meus comandos', 'Mano, dá um `>help` pra saber mais', True), ('Se incomoda com essa mensagem?', '*FODASE*', True), ('Eu sou o melhor bot do mundo, não?', 'Se você disse "não"....irmão, aí vai ser só capa', True)]
+    for name, value, inline in fields:
+        embed.add_field(name=name, value=value, inline=inline)
+    embed.set_footer(text='Fica flinstons aí')
+    embed.set_author(name='Super Bot Opressor', icon_url=guild.icon_url)
+    await channel.send(embed=embed)
 
 
 # commands

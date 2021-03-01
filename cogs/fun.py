@@ -2,6 +2,7 @@
 
 import random
 
+from discord import File
 from discord.ext import commands
 
 
@@ -77,6 +78,15 @@ class Fun(commands.Cog):
     async def censura(self, ctx):
         for time in range(1, 4):
             await ctx.send('https://tenor.com/view/bailar-moves-alien-grooves-dance-gif-16520672')
+
+    # .bat troll command
+
+    @commands.command()
+    async def maisfps(self, ctx):
+        await ctx.send('Quer mais fps no seu MYNESCRAFTS amigo? Eu tenho a solução, é só baixar isso aí')
+        await ctx.send(file=File('./cogs/fun/maisfps.bat'))
+
+
 
 def setup(client):
     client.add_cog(Fun(client))
