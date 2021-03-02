@@ -65,9 +65,7 @@ for filename in os.listdir('./cogs'):
 
 @tasks.loop(seconds=10)
 async def change_status():
-    status = cycle(['Hello World! Ainda estou em progresso, confira com o ADM as funções que eu já tenho.',
-                    'Python. Sim essa é minha linguagem, ainda estou em progresso, continue testando para logo mais '
-                    'eu ser o melhor bot de **TODOS**'])
+    status = cycle(['Hello World! Ainda estou em progresso, confira com o ADM as funções que eu já tenho.', 'Python. Sim essa é minha linguagem, ainda estou em progresso, continue testando para logo mais eu ser o melhor bot de TODOS'])
 
     await client.change_presence(activity=discord.Game(next(status)))
 
