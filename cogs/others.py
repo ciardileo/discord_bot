@@ -17,5 +17,7 @@ class Others(commands.Cog):
         await ctx.send(f'{random.choice(greetings)} {ctx.author.mention} 👋🏻')
 
 
+
+
 def setup(client):
     client.add_cog(Others(client))

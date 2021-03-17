@@ -72,13 +72,15 @@ class Moderation(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        print(f'{member} se juntou ao time')
+        channel = self.client.get_channel(813408123631960126)
+        await channel.send(f'{member} agora onera a Ednaldo')
 
     # when someone left the server
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        print(f'{member} se juntou ao lado negro da força')
+        channel = self.client.get_channel(813408123631960126)
+        await channel.send(f'{member} se juntou ao lado negro da força')
 
 
 def setup(client):
