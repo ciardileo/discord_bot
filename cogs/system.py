@@ -1,6 +1,7 @@
 # imports
 
 from discord.ext import commands
+import bot
 
 
 class System(commands.Cog):
@@ -12,7 +13,8 @@ class System(commands.Cog):
 
     @commands.command()
     async def ping(self, ctx):
-        await ctx.send(f'Pong!...espera, isso não é muito genérico? Ah deixa pra lá, seu ping é {round(self.client.latency * 1000)}ms')
+        await ctx.send(
+            f'Pong!...espera, isso não é muito genérico? Ah deixa pra lá, seu ping é {round(self.client.latency * 1000)}ms')
 
     # msg command
 
@@ -20,6 +22,8 @@ class System(commands.Cog):
     async def msg(self, ctx, *, mensagem):
         await ctx.channel.purge(limit=1)
         await ctx.send(mensagem)
+
+    # embed command
 
     @commands.command()
     async def embed(self, ctx):

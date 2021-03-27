@@ -2,7 +2,9 @@
 
 import discord
 from discord.ext import commands
-from discord.ext.commands.core import has_permissions
+from discord.ext.commands.core import has_permissions, bot_has_permissions
+from discord.ext.commands import Greedy
+import random
 
 
 class Moderation(commands.Cog):
@@ -12,9 +14,11 @@ class Moderation(commands.Cog):
     # commands
     # kick members
 
+    @bot_has_permissions(ban_members=True)
     @has_permissions(ban_members=True)
     @commands.command()
-    async def kick(self, ctx, member: discord.Member, *, reason=None):
+    async def kick(self, ctx, member: Greedy[discord.Member], *, reason=None):
+        print(member)
         await member.kick(reason=reason)
         await ctx.send(f'{member.mention} foi expulso')
 
@@ -71,15 +75,24 @@ class Moderation(commands.Cog):
     # when someone join the server
 
     @commands.Cog.listener()
-    async def on_member_join(self, member):
-        channel = self.client.get_channel(813408123631960126)
-        await channel.send(f'{member.mention} agora onera a Ednaldo')
+    async def on_member_join(self, member: discord.Member):
+        channel = self.client.get_channel(823546618598391817)
+
+        welcome = ['Chega mais', 'Eai', 'Salve', 'Opa']
+
+        embed = discord.Embed(title='👋🏻 Bem Vindo(a)', description=f'{random.choice(welcome)} {member.mention}, bem vindo(a) ao\n Super Gamers Opressores, leia as regras\n e se divirta!')
+
+        embed.set_author(name=f'{member.display_name}#{member.discriminator}', icon_url=member.avatar_url)
+        embed.set_thumbnail(url=member.avatar_url)
+        embed.set_image(url="https://media.discordapp.net/attachments/823546618862108707/825399357675143226/Ednaldo.gif")
+        embed.set_footer(text=f'ID do usuário: {member.id}. Fica flintons aí')
+        await channel.send(embed=embed)
 
     # when someone left the server
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        channel = self.client.get_channel(813408123631960126)
+        channel = self.client.get_channel(823546618862108707)
         await channel.send(f'{member.mention} se juntou ao lado negro da força')
 
 

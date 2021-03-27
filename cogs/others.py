@@ -20,8 +20,8 @@ class Others(commands.Cog):
     # discloses our social media
     @commands.command(aliases=['div', 'divulgação'])
     async def divulgar(self, ctx):
-        guild = self.client.get_guild(813408123154333776)
-        embed = Embed(title='Nossas Redes Sociais:', description='Nos siga lá pra dar uma moral', colour=0x7ED957)
+        guild = self.client.get_guild(823546618347257877)
+        embed = Embed(title='Nossas Redes Sociais:', description='Nos siga lá pra dar uma moral e ainda ganhar <:opressor:824271851089297448>', colour=0x7ED957)
         embed.add_field(name='Canal Principal',
                         value='[Link](https://www.youtube.com/channel/UCorA07IsPZvdB5G3sTvpFtw?sub_confirmation=1)',
                         inline=False)

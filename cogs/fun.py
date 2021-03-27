@@ -86,6 +86,14 @@ class Fun(commands.Cog):
         await ctx.send('Quer mais fps no seu MYNESCRAFTS amigo? Eu tenho a solução, é só baixar isso aí')
         await ctx.send(file=File('./cogs/fun/maisfps.bat'))
 
+    @commands.command()
+    async def memata(self, ctx):
+        if ctx.message.author.id == 756287979902730272:
+            await ctx.send('Ah lucas vai se fuder, essa porra de omori coisa de gay do caralho')
+        else:
+            ways = ['Na corda ou vai no prédio?', 'OK 🔫 POOOW, é...está morto...', 'Tá com depressor amigo?',
+                    'Hoje o mundo ficará melhor']
+            await ctx.send(random.choice(ways))
 
 
 def setup(client):
