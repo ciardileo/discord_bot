@@ -29,6 +29,18 @@ class System(commands.Cog):
     async def embed(self, ctx):
         pass
 
+    # user info command
+
+    @commands.command()
+    async def userinfo(self, ctx):
+        pass
+
+    # server info command
+
+    @commands.command()
+    async def serverinfo(self, ctx):
+        pass
+
 
 def setup(client):
     client.add_cog(System(client))

@@ -12,11 +12,14 @@ from discord.ext import commands, tasks
 # atributes
 
 # bot
-
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
 client = commands.Bot(command_prefix='>', intents=intents)
+
 status = cycle(['Hello World! Ainda estou em progresso, confira com o ADM as funções que eu já tenho.',
-                'Python. Sim essa é minha linguagem, ainda estou em progresso, continue testando para logo mais eu ser o melhor bot de TODOS'])
+                'Python. Sim essa é minha linguagem, ainda estou em progresso, continue testando para logo mais eu '
+                'ser o melhor bot de TODOS',
+                'Fica flinstons aí que eu to chegando', 'Eu amo o PornHub',
+                'Não sou escravo de vocês, mas trabalho de grassa'])
 
 
 # events
@@ -25,12 +28,12 @@ status = cycle(['Hello World! Ainda estou em progresso, confira com o ADM as fun
 @client.event
 async def on_ready():
     change_status.start()
+    revive_chat.start()
 
     print('Online')
     print(client.user.name)  # bot name
     print(client.user.id)  # id bot
 
-    channel = client.get_channel(823546618862108707)
     guild = client.get_guild(823546618347257877)
     print()
 
@@ -60,7 +63,6 @@ async def load(ctx, extension):
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
 
-
 # load all cogs when the bot starts
 
 for filename in os.listdir('./cogs'):
@@ -73,7 +75,14 @@ for filename in os.listdir('./cogs'):
 
 @tasks.loop(seconds=10)
 async def change_status():
+    channel = client.get_channel(823546618862108707)
     await client.change_presence(activity=discord.Game(next(status)))
+
+
+@tasks.loop(hours=1)
+async def revive_chat():
+    channel = client.get_channel(823546618862108707)
+    await channel.send('Passando pra abençoar o chat 👌')
 
 
 # run the bot

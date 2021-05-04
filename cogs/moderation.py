@@ -22,6 +22,7 @@ class Moderation(commands.Cog):
         await member.kick(reason=reason)
         await ctx.send(f'{member.mention} foi expulso')
 
+
     # kick command error
 
     @kick.error
@@ -94,6 +95,9 @@ class Moderation(commands.Cog):
     async def on_member_remove(self, member):
         channel = self.client.get_channel(823546618862108707)
         await channel.send(f'{member.mention} se juntou ao lado negro da força')
+
+
+
 
 
 def setup(client):

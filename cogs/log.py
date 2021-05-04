@@ -9,18 +9,22 @@ import random
 class Logs(commands.Cog):
     def __init__(self, client):
         self.client = client
-        self.channel = self.client.get_channel(813408123444264964)
+        self.channel = self.client.get_channel(823881567893585960)
 
     # on member update
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
         if before.display_name != after.display_name:
-            embed = Embed(title='Membro mudou o perfil', description='Mudou Nickname', colour=after.colour,
+            embed = Embed(title='Membro mudou o perfil', description='Mudou apelido', colour=after.colour,
                           timestamp=datetime.utcnow())
 
             fields = [('Antes', before.display_name, False), ('Depois', after.display_name, False)]
 
+            for name, value, inline in fields:
+                embed.add_field(name=name, value=value, inline=inline)
+
+            await self.channel.send(embed=embed)
     # on message edit
 
     @commands.Cog.listener()

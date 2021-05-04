@@ -79,6 +79,12 @@ class Fun(commands.Cog):
         for time in range(1, 4):
             await ctx.send('https://tenor.com/view/bailar-moves-alien-grooves-dance-gif-16520672')
 
+
+    @commands.command(aliases=['oqd'])
+    async def oqdevofzr(self, ctx):
+        await ctx.channel.purge(limit=1)
+        await ctx.send("Amigo, você deve piscar o cu bem devagar 😋")
+
     # .bat troll command
 
     @commands.command()
