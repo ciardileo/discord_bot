@@ -3,7 +3,6 @@
 import discord
 from discord.ext import commands
 from discord.ext.commands.core import has_permissions, bot_has_permissions
-from discord.ext.commands import Greedy
 import random
 
 
@@ -17,11 +16,9 @@ class Moderation(commands.Cog):
     @bot_has_permissions(ban_members=True)
     @has_permissions(ban_members=True)
     @commands.command()
-    async def kick(self, ctx, member: Greedy[discord.Member], *, reason=None):
+    async def kick(self, ctx, member: discord.Member, *, reason=None):
         print(member)
         await member.kick(reason=reason)
-        await ctx.send(f'{member.mention} foi expulso')
-
 
     # kick command error
 
@@ -33,10 +30,10 @@ class Moderation(commands.Cog):
     # ban members
 
     @has_permissions(ban_members=True)
+    @bot_has_permissions(ban_members=True)
     @commands.command()
     async def ban(self, ctx, member: discord.Member, *, reason=None):
         await member.ban(reason=reason)
-        await ctx.send(f'{member.mention} foi **B-A-N-I-D-O**')
 
     # ban command error
 
@@ -81,11 +78,13 @@ class Moderation(commands.Cog):
 
         welcome = ['Chega mais', 'Eai', 'Salve', 'Opa']
 
-        embed = discord.Embed(title='👋🏻 Bem Vindo(a)', description=f'{random.choice(welcome)} {member.mention}, bem vindo(a) ao\n Super Gamers Opressores, leia as regras\n e se divirta!')
+        embed = discord.Embed(title='👋🏻 Bem Vindo(a)',
+                              description=f'{random.choice(welcome)} {member.mention}, bem vindo(a) ao\n Super Gamers Opressores, leia as regras\n e se divirta!')
 
         embed.set_author(name=f'{member.display_name}#{member.discriminator}', icon_url=member.avatar_url)
         embed.set_thumbnail(url=member.avatar_url)
-        embed.set_image(url="https://media.discordapp.net/attachments/823546618862108707/825399357675143226/Ednaldo.gif")
+        embed.set_image(
+            url="https://media.discordapp.net/attachments/823546618862108707/825399357675143226/Ednaldo.gif")
         embed.set_footer(text=f'ID do usuário: {member.id}. Fica flintons aí')
         await channel.send(embed=embed)
 
@@ -96,8 +95,28 @@ class Moderation(commands.Cog):
         channel = self.client.get_channel(823546618862108707)
         await channel.send(f'{member.mention} se juntou ao lado negro da força')
 
+    # dm to all members
 
+    @has_permissions()
+    @commands.command()
+    async def dm_all(self, ctx, *, message):
+        for member in ctx.guild.members:
+            try:
+                await member.send(message)
+            except:
+                print(f"I can't send the message to {member}")
+            finally:
+                await ctx.send('Mensagem enviada 🤠')
 
+    # send a message in all channels
+
+    @commands.command()
+    async def msg_all(self, ctx, *, message):
+        for channel in ctx.guild.channels:
+            try:
+                await channel.send(message)
+            except:
+                print(f"I can't send in {channel}")
 
 
 def setup(client):

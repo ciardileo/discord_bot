@@ -1,5 +1,5 @@
 # imports
-
+import discord
 from discord.ext import commands
 import bot
 
@@ -22,6 +22,15 @@ class System(commands.Cog):
     async def msg(self, ctx, *, mensagem):
         await ctx.channel.purge(limit=1)
         await ctx.send(mensagem)
+
+    # direct message command
+
+    @commands.command()
+    async def dm(self, ctx, member: discord.Member, *, message):
+        if message != '':
+            await member.send(message)
+        else:
+            await ctx.send('Você precisa escrever a mensagem BURRO!')
 
     # embed command
 

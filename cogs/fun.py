@@ -79,7 +79,6 @@ class Fun(commands.Cog):
         for time in range(1, 4):
             await ctx.send('https://tenor.com/view/bailar-moves-alien-grooves-dance-gif-16520672')
 
-
     @commands.command(aliases=['oqd'])
     async def oqdevofzr(self, ctx):
         await ctx.channel.purge(limit=1)
@@ -100,6 +99,11 @@ class Fun(commands.Cog):
             ways = ['Na corda ou vai no prédio?', 'OK 🔫 POOOW, é...está morto...', 'Tá com depressor amigo?',
                     'Hoje o mundo ficará melhor']
             await ctx.send(random.choice(ways))
+
+    @commands.command(aliases=['gemidao'])
+    async def geme(self, ctx):
+        await ctx.send(file=File('./cogs/fun/troll.mp3'))
+        await ctx.send("😡 NÃO SOU SUA PUTA NÃO FDP")
 
 
 def setup(client):

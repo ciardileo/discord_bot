@@ -7,7 +7,7 @@ from discord import Embed
 from discord.ext import commands, tasks
 
 # bot config
-# user discriminator = user code
+# user discriminator = user code}
 
 # atributes
 
@@ -56,7 +56,6 @@ async def on_ready():
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
 
-
 # unload a cog
 
 @client.command()
@@ -75,7 +74,6 @@ for filename in os.listdir('./cogs'):
 
 @tasks.loop(seconds=10)
 async def change_status():
-    channel = client.get_channel(823546618862108707)
     await client.change_presence(activity=discord.Game(next(status)))
 
 
@@ -84,7 +82,5 @@ async def revive_chat():
     channel = client.get_channel(823546618862108707)
     await channel.send('Passando pra abençoar o chat 👌')
 
-
-# run the bot
 
 client.run('ODEzNTAzNjY1NTgyNzY4MjAw.YDQQVA.ZHdSu7vT3puRogPm_rI2udbtlMw')  # bot token
