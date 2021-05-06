@@ -1,7 +1,7 @@
 # imports
 
 import random
-
+import os
 from discord import File
 from discord.ext import commands
 
@@ -104,6 +104,22 @@ class Fun(commands.Cog):
     async def geme(self, ctx):
         await ctx.send(file=File('./cogs/fun/troll.mp3'))
         await ctx.send("😡 NÃO SOU SUA PUTA NÃO FDP")
+
+    # send a random meme
+
+    @commands.command()
+    async def meme(self, ctx):
+        await ctx.send('Shitpost saindo...')
+        memes = random.choice(os.listdir('C:/Users/Léo Ciardi/OneDrive/Imagens/Saved Pictures/memes/videos'))
+        await ctx.send(file=File(f'C:/Users/Léo Ciardi/OneDrive/Imagens/Saved Pictures/memes/videos/{memes}'))
+        print('Meme requested')
+
+    # send a morning video
+
+    @commands.command(aliases=['bom_dia'])
+    async def bomdia(self, ctx):
+        await ctx.send('Bom dia puto')
+        await ctx.send(file=File("C:/Users/Léo Ciardi/OneDrive/Imagens/Saved Pictures/memes/videos/Bom_dia_1_1-1-1-3-1.mp4"))
 
 
 def setup(client):
