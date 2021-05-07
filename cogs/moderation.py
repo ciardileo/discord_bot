@@ -100,13 +100,16 @@ class Moderation(commands.Cog):
     @has_permissions()
     @commands.command()
     async def dm_all(self, ctx, *, message):
+        count = 0
         for member in ctx.guild.members:
             try:
                 await member.send(message)
+                count += 1
             except:
                 print(f"I can't send the message to {member}")
-            finally:
-                await ctx.send('Mensagem enviada 🤠')
+
+        await ctx.send(f'Mensagem enviada para {count} membros 🤠')
+        print(f'Usuário {ctx.author} mandou DM para todos')
 
     # send a message in all channels
 
@@ -117,6 +120,10 @@ class Moderation(commands.Cog):
                 await channel.send(message)
             except:
                 print(f"I can't send in {channel}")
+
+        print(f'Usuário {ctx.author} mandou mensagem para todos')
+
+
 
 
 def setup(client):
