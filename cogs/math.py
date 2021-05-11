@@ -3,6 +3,7 @@
 from discord.ext import commands
 
 
+# main class
 class Math(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -10,8 +11,8 @@ class Math(commands.Cog):
     # commands
 
     # take a "*" on parameters means that the next parameter has multiple arguments as one
-    # count command
 
+    # count command
     @commands.command(aliases=['count'])
     async def conta(self, ctx, number1, operator, number2):
         if operator == '+':
@@ -36,5 +37,6 @@ class Math(commands.Cog):
                 await ctx.send('Você tem que colocar números!\nTenta de novo')
 
 
+# laod the cog
 def setup(client):
     client.add_cog(Math(client))

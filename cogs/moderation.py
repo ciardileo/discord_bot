@@ -6,13 +6,14 @@ from discord.ext.commands.core import has_permissions, bot_has_permissions
 import random
 
 
+# main class
 class Moderation(commands.Cog):
     def __init__(self, client):
         self.client = client
 
     # commands
-    # kick members
 
+    # kick members
     @bot_has_permissions(ban_members=True)
     @has_permissions(ban_members=True)
     @commands.command()
@@ -21,14 +22,12 @@ class Moderation(commands.Cog):
         await member.kick(reason=reason)
 
     # kick command error
-
     @kick.error
     async def kick_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send('Você não mencionou que membro quer expulsar')
 
     # ban members
-
     @has_permissions(ban_members=True)
     @bot_has_permissions(ban_members=True)
     @commands.command()
@@ -36,14 +35,12 @@ class Moderation(commands.Cog):
         await member.ban(reason=reason)
 
     # ban command error
-
     @ban.error
     async def ban_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send('Você não mencionou que membro quer banir')
 
     # unban members
-
     @commands.command()
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()
@@ -58,20 +55,17 @@ class Moderation(commands.Cog):
                 return
 
     # unban command error
-
     @unban.error
     async def unban_error(self, ctx, error):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send('Você não mencionou que membro quer desbanir')
 
     # clear messages
-
     @commands.command(aliases=['cls', 'limpar'])
     async def clear(self, ctx, amount=5):
         await ctx.channel.purge(limit=amount)
 
     # when someone join the server
-
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
         channel = self.client.get_channel(823546618598391817)
@@ -89,14 +83,12 @@ class Moderation(commands.Cog):
         await channel.send(embed=embed)
 
     # when someone left the server
-
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         channel = self.client.get_channel(823546618862108707)
         await channel.send(f'{member.mention} se juntou ao lado negro da força')
 
     # dm to all members
-
     @has_permissions()
     @commands.command()
     async def dm_all(self, ctx, *, message):
@@ -112,7 +104,6 @@ class Moderation(commands.Cog):
         print(f'Usuário {ctx.author} mandou DM para todos')
 
     # send a message in all channels
-
     @commands.command()
     async def msg_all(self, ctx, *, message):
         for channel in ctx.guild.channels:
@@ -124,7 +115,6 @@ class Moderation(commands.Cog):
         print(f'Usuário {ctx.author} mandou mensagem para todos')
 
 
-
-
+# load the cog
 def setup(client):
     client.add_cog(Moderation(client))

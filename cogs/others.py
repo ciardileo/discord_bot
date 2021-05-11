@@ -1,11 +1,12 @@
 # imports
 
-from discord.ext import commands
-import asyncio
-from discord import Embed
 import random
 
+from discord import Embed
+from discord.ext import commands
 
+
+# main class
 class Others(commands.Cog):
     def __init__(self, client):
         self.client = client
@@ -37,6 +38,12 @@ class Others(commands.Cog):
         embed.set_author(name='Super Memes Opressores', icon_url=guild.icon_url)
         await ctx.send(embed=embed)
 
+        # send the invite link
+        @commands.command(alises=['cvt', 'convite'])
+        async def invite(self, ctx):
+            pass
 
+
+# load the cog
 def setup(client):
     client.add_cog(Others(client))

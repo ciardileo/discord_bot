@@ -28,7 +28,7 @@ status = cycle(['Hello World! Ainda estou em progresso, confira com o ADM as fun
 @client.event
 async def on_ready():
     change_status.start()
-    revive_chat.start()
+    # revive_chat.start()
 
     print('Online')
     print(client.user.name)  # bot name
@@ -77,10 +77,10 @@ async def change_status():
     await client.change_presence(activity=discord.Game(next(status)))
 
 
-@tasks.loop(hours=1)
-async def revive_chat():
-    channel = client.get_channel(823546618862108707)
-    await channel.send('Passando pra abençoar o chat 👌')
+# @tasks.loop(hours=1)
+# async def revive_chat():
+#     channel = client.get_channel(823546618862108707)
+#     await channel.send('Passando pra abençoar o chat 👌')
 
 
 client.run('ODEzNTAzNjY1NTgyNzY4MjAw.YDQQVA.ZHdSu7vT3puRogPm_rI2udbtlMw')  # bot token
