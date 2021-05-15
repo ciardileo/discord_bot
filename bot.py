@@ -3,8 +3,9 @@
 import os
 from itertools import cycle
 import discord
-from discord import Embed
+# from discord import Embed
 from discord.ext import commands, tasks
+import databases as db
 
 # bot config
 # user discriminator = user code}
@@ -15,10 +16,11 @@ from discord.ext import commands, tasks
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
 client = commands.Bot(command_prefix='>', intents=intents)
 
+# status list
 status = cycle(['Hello World! Ainda estou em progresso, confira com o ADM as funções que eu já tenho.',
                 'Python. Sim essa é minha linguagem, ainda estou em progresso, continue testando para logo mais eu '
                 'ser o melhor bot de TODOS',
-                'Fica flinstons aí que eu to chegando', 'Eu amo o PornHub',
+                'Fica flinstons aí que eu to chegando', 'Eu não pareço um sarigue?',
                 'Não sou escravo de vocês, mas trabalho de grassa'])
 
 
@@ -50,37 +52,32 @@ async def on_ready():
 
 
 # commands
-# load a cog
 
+# load a cog
 @client.command()
 async def load(ctx, extension):
     client.load_extension(f'cogs.{extension}')
 
-# unload a cog
 
+# unload a cog
 @client.command()
 async def unload(ctx, extension):
     client.unload_extension(f'cogs.{extension}')
 
-# load all cogs when the bot starts
 
+# load all cogs when the bot starts
 for filename in os.listdir('./cogs'):
     if filename.endswith('.py'):
         client.load_extension(f'cogs.{filename[:-3]}')
 
 
 # background task that will be executed every 10 seconds
-# change status
 
+# change status
 @tasks.loop(seconds=10)
 async def change_status():
     await client.change_presence(activity=discord.Game(next(status)))
 
 
-# @tasks.loop(hours=1)
-# async def revive_chat():
-#     channel = client.get_channel(823546618862108707)
-#     await channel.send('Passando pra abençoar o chat 👌')
-
-
+# run the bot
 client.run('ODEzNTAzNjY1NTgyNzY4MjAw.YDQQVA.ZHdSu7vT3puRogPm_rI2udbtlMw')  # bot token

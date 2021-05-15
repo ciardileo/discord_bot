@@ -60,6 +60,15 @@ class Moderation(commands.Cog):
         if isinstance(error, commands.MissingRequiredArgument):
             await ctx.send('Você não mencionou que membro quer desbanir')
 
+    # give a role to a member
+    @commands.command()
+    @has_permissions(manage_roles=True)
+    async def give_role(self, ctx, role, member: discord.Member):
+
+        role = role[3:-1]
+        role = ctx.guild.get_role(int(role))
+        await member.add_roles(role, reason='Mudando os cargos')
+
     # clear messages
     @commands.command(aliases=['cls', 'limpar'])
     async def clear(self, ctx, amount=5):

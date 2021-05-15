@@ -75,7 +75,7 @@ class System(commands.Cog):
         pass
 
     # user info command
-    @commands.command(aliases=['rg'])
+    @commands.command(aliases=['rg', 'hack'])
     async def userinfo(self, ctx, member: discord.Member):
         joined_at = member.joined_at  # .split('-')
         created_at = member.created_at  # .split('-')
@@ -85,8 +85,8 @@ class System(commands.Cog):
 
         # this code can be simplified:
 
-        joined_at = joined_at.strftime('%D/%M/%Y')
-        created_at = created_at.strftime('%D/%M/%Y')
+        joined_at = joined_at.strftime('%d/%m/%Y')
+        created_at = created_at.strftime('%d/%m/%Y')
 
         embed = discord.Embed(title=f'Stalkeando amigão??', description='Aqui as informações...')
         embed.set_author(name=f'{member.name}{member.discriminator}', icon_url=member.avatar_url)
@@ -146,8 +146,10 @@ class System(commands.Cog):
             await ctx.send('O limite de opções é 8 mano!')
         else:
             counter = 1
+            used = 0
             for answer in answers:
-                embed.add_field(name=f'{emoji[counter]} {answer.strip()}', value=f'Reaja com {counter}', inline=False)
+                used += 1
+                embed.add_field(name=f'{emoji[counter-1]} {answer.strip()}', value=f'Reaja com {counter}', inline=False)
                 counter += 1
             await ctx.send(embed=embed)
 

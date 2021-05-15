@@ -11,7 +11,6 @@ from discord.ext import commands
 def rename_memes():
     memesdir = f'{os.environ["ONEDRIVE"].replace(os.sep, "/")}/Imagens/Saved Pictures/memes/videos'
     counter = 1
-    print(memesdir)
     sorted_memes = list()
     new_memes = list()
 
