@@ -29,26 +29,27 @@ status = cycle(['Hello World! Ainda estou em progresso, confira com o ADM as fun
 
 @client.event
 async def on_ready():
-    change_status.start()
-    # revive_chat.start()
+	change_status.start()
+	# revive_chat.start()
 
-    print('Online')
-    print(client.user.name)  # bot name
-    print(client.user.id)  # id bot
+	print('Online')
+	print(client.user.name)  # bot name
+	print(client.user.id)  # id bot
 
-    guild = client.get_guild(823546618347257877)
-    print()
+	guild = client.get_guild(823546618347257877)
+	print()
 
-    # embed = Embed(title='O Pai Ta On Família!', description='Super Bot Opressor está online.', colour=0xFF0000)
-    # fields = [('Meus comandos', 'Mano, dá um `>help` pra saber mais', True),
-    #           ('Se incomoda com essa mensagem?', '*FODASE*', True),
-    #           ('Eu sou o melhor bot do mundo, não?', 'Definitivamente não ;-; MAS AINDA VOU SER', True)]
-    # for name, value, inline in fields:
-    #     embed.add_field(name=name, value=value, inline=inline)
-    # embed.set_footer(text='Fica flinstons aí')
-    # embed.set_author(name='Super Bot Opressor',
-    #                  icon_url=guild.icon_url)
-    # await channel.send(embed=embed)
+
+# embed = Embed(title='O Pai Ta On Família!', description='Super Bot Opressor está online.', colour=0xFF0000)
+# fields = [('Meus comandos', 'Mano, dá um `>help` pra saber mais', True),
+#           ('Se incomoda com essa mensagem?', '*FODASE*', True),
+#           ('Eu sou o melhor bot do mundo, não?', 'Definitivamente não ;-; MAS AINDA VOU SER', True)]
+# for name, value, inline in fields:
+#     embed.add_field(name=name, value=value, inline=inline)
+# embed.set_footer(text='Fica flinstons aí')
+# embed.set_author(name='Super Bot Opressor',
+#                  icon_url=guild.icon_url)
+# await channel.send(embed=embed)
 
 
 # commands
@@ -56,19 +57,19 @@ async def on_ready():
 # load a cog
 @client.command()
 async def load(ctx, extension):
-    client.load_extension(f'cogs.{extension}')
+	client.load_extension(f'cogs.{extension}')
 
 
 # unload a cog
 @client.command()
 async def unload(ctx, extension):
-    client.unload_extension(f'cogs.{extension}')
+	client.unload_extension(f'cogs.{extension}')
 
 
 # load all cogs when the bot starts
 for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
-        client.load_extension(f'cogs.{filename[:-3]}')
+	if filename.endswith('.py'):
+		client.load_extension(f'cogs.{filename[:-3]}')
 
 
 # background task that will be executed every 10 seconds
@@ -76,7 +77,7 @@ for filename in os.listdir('./cogs'):
 # change status
 @tasks.loop(seconds=10)
 async def change_status():
-    await client.change_presence(activity=discord.Game(next(status)))
+	await client.change_presence(activity=discord.Game(next(status)))
 
 
 # run the bot
