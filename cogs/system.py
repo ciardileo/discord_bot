@@ -49,14 +49,14 @@ class System(commands.Cog):
 	async def avatar(self, ctx, member: discord.Member = 0):
 		print(member)
 		if member == 0 or member.id == ctx.author.id:
-			embed = discord.Embed(title=f'Seu avatar, {ctx.author.name}', description='Você é MUITO feio...')
+			embed = discord.Embed(title=f'Seu avatar, {ctx.author.name}', colour=ctx.author.color, description='Você é MUITO feio...')
 			embed.set_image(url=ctx.author.avatar_url)
 			embed.set_author(name=ctx.author.name+"#"+ctx.author.discriminator, icon_url=ctx.author.avatar_url)
 			embed.set_footer(text=f'{ctx.author.name} pediu o própio avatar, quanto ego...')
 			await ctx.send(embed=embed)
 			print(f'Usuário {ctx.author} pediu avatar dele mesmo')
 		else:
-			embed = discord.Embed(title=f'Avatar de {member.name}', description='Você é MUITO feio...')
+			embed = discord.Embed(title=f'Avatar de {member.name}', colour=member.color, description='Você é MUITO feio...')
 			embed.set_image(url=member.avatar_url)
 			embed.set_author(name=member.name+"#"+member.discriminator, icon_url=member.avatar_url)
 			embed.set_footer(text=f'Avatar pedido por {ctx.author.name}')

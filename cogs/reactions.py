@@ -17,6 +17,7 @@ class Reactions(commands.Cog):
 	async def react(self, ctx, message_id, reaction, role: discord.Role):
 		# id - reaction, role - reaction, role - reaction, role...
 		message = await ctx.channel.fetch_message(message_id)
+		print(reaction)
 		await ctx.channel.purge(limit=1)
 		for item in self.reactions:
 			if str(message_id) == item[0]:
@@ -28,12 +29,15 @@ class Reactions(commands.Cog):
 						await ctx.send('Reação atualizada', delete_after=3)
 			else:
 				await message.add_reaction(emoji=f'{reaction}')
-				db.execute_args('insert into reactions (message_id, reaction, role_id) values (?, ?, ?)', (message_id, reaction, role.id))
+				if len(reaction) > 1:
+					reaction = reaction.split(':')
+				db.execute_args('insert into reactions (message_id, reaction, role_id) values (?, ?, ?)', (message_id, reaction[1], role.id))
 
 	@has_permissions(manage_roles=True)
 	@commands.command()
 	async def remove_react(self, ctx, message_id, reaction):
 		db.execute_args('delete from reactions where message_id = ? and reaction = ?', (message_id, reaction))
+		await ctx.channel.purge(limit=1)
 		await ctx.send('Reação removida com sucesso', delete_after=3)
 
 	@commands.Cog.listener()
