@@ -9,6 +9,12 @@ reactions_table = 'create table if not exists reactions(' \
                   'role_id char(18)' \
                   ');'
 
+judge_table = 'create table if not exists judge(' \
+              'user_id char(18) not null,' \
+              'mute_time varchar(6),' \
+              'warns int(1)' \
+              ');'
+
 
 def execute(command):
     cursor.execute(command)
