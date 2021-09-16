@@ -1,7 +1,6 @@
 # imports
-
 import random
-
+from rich.console import Console
 from discord import Embed
 from discord.ext import commands
 
@@ -9,15 +8,17 @@ from discord.ext import commands
 # main class
 class Others(commands.Cog):
     def __init__(self, client):
+        # instances
         self.client = client
+        self.console = Console()
 
     # commands
-
     # say hi
     @commands.command(aliases=['eae', 'eaí', 'salve', 'opa', 'eai', 'olá', 'ola'])
     async def oi(self, ctx):
         greetings = ['Eaí', 'Eae', 'Oi', 'Olá', 'Salve', 'Opa,', 'Fala aí']
         await ctx.send(f'{random.choice(greetings)} {ctx.author.mention} 👋🏻')
+        self.console.log(f'Usuário [green]{ctx.author}[/] pediu um "oi"')
 
     # discloses our social media
     @commands.command(aliases=['div', 'divulgação'])
@@ -37,11 +38,8 @@ class Others(commands.Cog):
         embed.set_footer(text='Curte e Compartilha Tudo Irmão')
         embed.set_author(name='Super Memes Opressores', icon_url=guild.icon_url)
         await ctx.send(embed=embed)
-
-        # send the invite link
-        @commands.command(alises=['cvt', 'convite'])
-        async def invite(self, ctx):
-            pass
+        
+        self.console.log(f'Usuário [green]{ctx.author}[/] divulgou nossas redes sociais')
 
 
 # load the cog

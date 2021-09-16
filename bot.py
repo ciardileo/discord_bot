@@ -12,10 +12,10 @@ console = Console()
 
 # bot
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
-client = commands.Bot(command_prefix='c/', intents=intents)
+client = commands.Bot(command_prefix='>', intents=intents)
 
 # status list
-status = cycle(['Fica flinstons aí que eu to chegando', 'Eu não pareço um sarigue?', 'Dá um "c/help" pra ver o que o melhor bot do mundo tem a oferecer '])
+status = cycle(['Fica flinstons aí que eu to chegando', 'Eu não pareço um sarigue?', 'Dá um ">help" pra ver o que o melhor bot do mundo tem a oferecer '])
 
 # events
 # def to be executed when the bot starts
@@ -24,8 +24,9 @@ async def on_ready():
     change_status.start()
 
     console.log('[green]Bot Online[/]')
-    console.print(client.user.name)  # bot name
+    console.print(f'{client.user.name}')  # bot name
     console.print(f'ID: {client.user.id}')  # id bot
+    console.print("=" * 25)
 
 # embed = Embed(title='O Pai Ta On Família!', description='Super Bot Opressor está online.', colour=0xFF0000)
 # fields = [('Meus comandos', 'Mano, dá um `>help` pra saber mais', True),

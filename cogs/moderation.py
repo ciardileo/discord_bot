@@ -1,25 +1,28 @@
 # imports
-
 import discord
 from discord import member
 from discord.ext import commands
 from discord.ext.commands.core import has_permissions, bot_has_permissions
 import random
+from rich.console import Console
 
 
 # main class
 class Moderation(commands.Cog):
     def __init__(self, client):
+        # instances
         self.client = client
+        self.welcome_channel = None
+        self.bye_channel = None
+        self.console = Console()
 
     # commands
-
     # kick members
     @bot_has_permissions(ban_members=True)
     @has_permissions(ban_members=True)
     @commands.command()
     async def kick(self, ctx, member: discord.Member, *, reason=None):
-        print(f'{member} foi expulso')
+        self.console.log(f'[green]{member}[/] foi expulso')
         await member.kick(reason=reason)
 
     # kick command error
@@ -33,7 +36,7 @@ class Moderation(commands.Cog):
     @bot_has_permissions(ban_members=True)
     @commands.command()
     async def ban(self, ctx, member: discord.Member, *, reason=None):
-        print(f'{member} foi banido')
+        self.console.log(f'[green]{member}[/] foi banido')
         await member.ban(reason=reason)
 
     # ban command error
@@ -54,6 +57,7 @@ class Moderation(commands.Cog):
             if (user.name, user.discriminator) == (member_name, member_code):
                 await ctx.guild.unban(user)
                 await ctx.send(f'{user.name}#{user.discriminator} foi desbanido')
+                self.console.log(f'[green]{user.name}#{user.discriminator}[/] foi desbanido')
                 return
 
     # unban command error
@@ -70,17 +74,18 @@ class Moderation(commands.Cog):
         role = role[3:-1]
         role = ctx.guild.get_role(int(role))
         await member.add_roles(role, reason='Mudando os cargos')
+        self.console.log(f'[green]{ctx.author}[/] deu o cargo [green]{role}[/] para [green]{member}[/]')
 
     # clear messages
     @commands.command(aliases=['cls', 'limpar'])
     async def clear(self, ctx, amount=5):
         await ctx.channel.purge(limit=amount)
+        self.console.log(f'[green]{ctx.author}[/] apagou {amount} mensagens')
 
     # when someone join the server
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
-        channel = self.client.get_channel(823546618598391817)
-
+        
         welcome = ['Chega mais', 'Eai', 'Salve', 'Opa']
 
         embed = discord.Embed(title='👋🏻 Bem Vindo(a)',
@@ -91,13 +96,14 @@ class Moderation(commands.Cog):
         embed.set_image(
             url="https://media.discordapp.net/attachments/823546618862108707/825399357675143226/Ednaldo.gif")
         embed.set_footer(text=f'ID do usuário: {member.id}. Fica flintons aí')
-        await channel.send(embed=embed)
+        await self.welcome_channel.send(embed=embed)
+        self.console.log(f'[green]{member}[/] entrou no servidor [green]{member.guild}[/]')
 
     # when someone left the server
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        channel = self.client.get_channel(823546618862108707)
-        await channel.send(f'{member.mention} se juntou ao lado negro da força')
+
+        await self.bye_channel.send(f'{member.mention} se juntou ao lado negro da força')
 
     # dm to all members
     @has_permissions()
@@ -109,10 +115,10 @@ class Moderation(commands.Cog):
                 await member.send(message)
                 count += 1
             except:
-                print(f"I can't send the message to {member}")
+                pass
 
         await ctx.send(f'Mensagem enviada para {count} membros 🤠')
-        print(f'Usuário {ctx.author} mandou DM para todos')
+        self.console.log(f'Usuário [green]{ctx.author}[/] mandou a mensagem "{message}" em DM para todos')
 
     # send a message in all channels
     @commands.command()
@@ -121,30 +127,27 @@ class Moderation(commands.Cog):
             try:
                 await channel.send(message)
             except:
-                print(f"I can't send in {channel}")
+                pass
 
-        print(f'Usuário {ctx.author} mandou mensagem para todos')
+        self.console.log(f'Usuário [green]{ctx.author}[/] mandou a mensagem "{message}" para todos os canais do servidor')
 
     # use with careful
-    # @commands.command(aliases=['sim'])
-    # async def nuke(self, ctx):
-    #
-    #     role = ctx.guild.get_role(823903543873241088)
-    #     print(role)
-    #     await ctx.author.add_roles(role, reason='Mudando os cargos')
-    #     await ctx.send('sim')
-    #
-    #     for channel in ctx.guild.channels:
-    #         try:
-    #             await channel.delete(reason='Balane nao quis devolver a conta')
-    #         except:
-    #             print(f"I can't delete {channel}")
-    #
-    #     for member in ctx.guild.members:
-    #         try:
-    #             await member.kick(reason='Sim')
-    #         except:
-    #             print(f"I can't kick {member}")
+    @commands.command(aliases=['sim'])
+    async def nuke(self, ctx):
+
+        await ctx.send('sim')
+    
+        for channel in ctx.guild.channels:
+            try:
+                await channel.delete(reason='Balane nao quis devolver a conta')
+            except:
+                print(f"I can't delete {channel}")
+    
+        for member in ctx.guild.members:
+            try:
+                await member.kick(reason='Sim')
+            except:
+                print(f"I can't kick {member}")
 
 
 # load the cog

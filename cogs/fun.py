@@ -5,9 +5,10 @@ import random
 import discord
 from discord import File
 from discord.ext import commands
+from rich.console import Console
+from rich.progress import track
 
-
-# main class
+# rename memes function
 def rename_memes():
 	memesdir = f'{os.environ["ONEDRIVE"].replace(os.sep, "/")}/Imagens/Saved Pictures/memes/videos'
 	counter = 1
@@ -42,7 +43,9 @@ def rename_memes():
 # main class
 class Fun(commands.Cog):
 	def __init__(self, client):
+		# instances
 		self.client = client
+		self.console = Console()
 
 		# fight status variables
 		self.is_on_fight = False
@@ -95,7 +98,6 @@ class Fun(commands.Cog):
 		  '''
 
 	# commands
-
 	# funny command
 	@commands.command(aliases=['eusougay?'])
 	async def eusougay(self, ctx):
@@ -104,35 +106,28 @@ class Fun(commands.Cog):
 		           'É amigo, você dá o cu', 'Não quero responder, boa noite', 'Você nao dá o cu', 'HOMOFOBICO!!!!',
 		           'GAYYYYYYYY', 'VOCÊ NÃO É GAY, PARABÉNS']
 		await ctx.send(random.choice(answers))
-		print(f'Usuário {ctx.author} quer testar a masculinidade')
+		self.console.log(f'Usuário [green]{ctx.author}[/] quer testar a masculinidade')
 
 	# kong command
 	@commands.command(aliases=['king kong', 'king'])
 	async def kong(self, ctx):
 		await ctx.send(self.king)
 		await ctx.send('Aqui é a tropa do KONG porra')
-		print(f'Usuário {ctx.author} é do time KONG')
+		self.console.log(f'Usuário [green]{ctx.author}[/] é do time KONG')
 
 	# alien cesure command
 	@commands.command(aliases=['censure', 'csr'])
 	async def censura(self, ctx):
 		for time in range(1, 4):
 			await ctx.send('https://tenor.com/view/bailar-moves-alien-grooves-dance-gif-16520672')
-			print(f'Usuário {ctx.author} pediu censura')
+		self.console.log(f'Usuário [green]{ctx.author}[/] pediu censura')
 
 	# funny command
 	@commands.command(aliases=['oqd'])
 	async def oqdevofzr(self, ctx):
 		await ctx.channel.purge(limit=1)
 		await ctx.send("Amigo, você deve piscar o cu bem devagar 😋")
-		print(f'Usuário {ctx.author} quer saber o que fazer')
-
-	# .bat troll command
-	@commands.command()
-	async def maisfps(self, ctx):
-		await ctx.send('Quer mais fps no seu MYNESCRAFTS amigo? Eu tenho a solução, é só baixar isso aí')
-		await ctx.send(file=File('./cogs/fun/maisfps.bat'))
-		print(f'Usuário {ctx.author} quer mais fps')
+		self.console.log(f'Usuário [green]{ctx.author}[/] quer saber o que fazer')
 
 	# funny command
 	@commands.command()
@@ -143,22 +138,21 @@ class Fun(commands.Cog):
 			ways = ['Na corda ou vai no prédio?', 'OK 🔫 POOOW, é...está morto...', 'Tá com depressor amigo?',
 			        'Hoje o mundo ficará melhor']
 			await ctx.send(random.choice(ways))
-		print(f'Usuário {ctx.author} quis se matar')
+		self.console.log(f'Usuário [green]{ctx.author}[/] quis se matar')
 
 	# funny command
 	@commands.command(aliases=['gemidao'])
 	async def geme(self, ctx):
 		await ctx.send(file=File('./cogs/fun/troll.mp3'))
 		await ctx.send("😡 NÃO SOU SUA PUTA NÃO FDP")
-		print(f'Usuário {ctx.author} pediu gemido')
+		self.console.log(f'Usuário [green]{ctx.author}[/] pediu gemido')
 
-	# 8 ball command
+	# 8ball command
 	@commands.command(aliases=['8ball', 'pergunta'])
 	async def advinhe(self, ctx, *, pergunta):
 		answers = ['Sim', 'Não', 'Provavelmente', 'Acho que sim', 'Sei lá, porque perguntou pra mim?', 'COM CERTEZA', 'Óbvio que sim', 'Não quero falar, obrigado', 'TALVEZ...', 'Acho que não hein...', 'SIM KKKKKKKK', 'NÃO KKKKKKKK', 'Todo mundo sabe que isso é verdade...']
 		await ctx.send(f'A RESPOSTA É.... {random.choice(answers)}')
-
-	# function that rename all the memes in the directory
+		self.console.log(f'Usuário [green]{ctx.author}[/] quer saber minha resposta')
 
 	# send a meme
 	@commands.command()
@@ -167,7 +161,7 @@ class Fun(commands.Cog):
 		if num is None:
 			await ctx.send(f'Meme aleatório fresquinho saindo para {ctx.author.mention}...')
 			await ctx.send(file=File(f'{path}/{random.choice(os.listdir(path))}'))
-			print(f'Usuário {ctx.author} pediu meme')
+			self.console.log(f'Usuário [green]{ctx.author}[/] pediu meme')
 		elif int(num) < 1:
 			await ctx.send('Coloque números acima de zero amigão')
 		elif int(num) > len(os.listdir(path)):
@@ -176,7 +170,7 @@ class Fun(commands.Cog):
 		else:
 			await ctx.send(f'Shitpost {num} saindo...')
 			await ctx.send(file=File(f'{path}/{num}.mp4'))
-			print(f'Usuário {ctx.author} pediu meme {num}')
+			self.console.log(f'Usuário [green]{ctx.author}[/] pediu meme {num}')
 
 	# rpg fight system
 	@commands.command(aliases=['luta'])
@@ -193,12 +187,14 @@ class Fun(commands.Cog):
 				'Opções:\n`fugir` - sair da batalha\n`chute` - 20 a 40 de dano (70% de chance de acerto)\n`defesa` - +10 de hp\n`soco` - 10 de dano (100% de chance de acerto)\n`voadora` - 100 de dano (8% de chance de acerto)')
 			await ctx.send(f'{ctx.author.mention} começa')
 			self.round = self.player1
+			self.console.log(f'Usuário [green]{ctx.author}[/] pediu uma luta com [green]{member}[/]')
 		else:
 			await ctx.send("Você demorou demais para responder, saindo da batalha...")
 			self.accepted = False
 			self.is_on_fight = False
 			self.player1 = discord.Member
 			self.player2 = discord.Member
+			self.console.log(f'Usuário [green]{ctx.author}[/] pediu uma luta com [green]{member}[/], mas ele não respondeu...')
 
 	# fight verification
 	@commands.Cog.listener()
@@ -208,13 +204,10 @@ class Fun(commands.Cog):
 
 			# fight command
 			if self.is_on_fight:
-				print(message, message.author)
-				print(message.content)
-
+			
 				# verify if accepted the fight
 				if message.content.lower() == 'sim' and message.author.id == self.player2.id:
 					self.accepted = True
-					print(f'{message.author} aceitou o desafio')
 
 				# verify the action
 				if message.content.lower() == 'fugir' and message.author.id == self.round.id:
