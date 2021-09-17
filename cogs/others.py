@@ -36,7 +36,7 @@ class Others(commands.Cog):
         embed.add_field(name='Nosso Instagram', value='[Link](https://www.instagram.com/super_memes_opressores/)',
                         inline=False)
         embed.set_footer(text='Curte e Compartilha Tudo Irmão')
-        embed.set_author(name='Super Memes Opressores', icon_url=guild.icon_url)
+        embed.set_author(name='Super Memes Opressores', icon_url=ctx.author.guild.icon_url)
         await ctx.send(embed=embed)
         
         self.console.log(f'Usuário [green]{ctx.author}[/] divulgou nossas redes sociais')

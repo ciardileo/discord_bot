@@ -22,7 +22,7 @@ class Moderation(commands.Cog):
     @has_permissions(ban_members=True)
     @commands.command()
     async def kick(self, ctx, member: discord.Member, *, reason=None):
-        self.console.log(f'[green]{member}[/] foi expulso')
+        self.console.log(f'[green]{member}[/] foi expulso por [green]{ctx.author}[/]')
         await member.kick(reason=reason)
 
     # kick command error
@@ -36,7 +36,7 @@ class Moderation(commands.Cog):
     @bot_has_permissions(ban_members=True)
     @commands.command()
     async def ban(self, ctx, member: discord.Member, *, reason=None):
-        self.console.log(f'[green]{member}[/] foi banido')
+        self.console.log(f'[green]{member}[/] foi banido por [green]{ctx.author}[/]')
         await member.ban(reason=reason)
 
     # ban command error
@@ -57,7 +57,7 @@ class Moderation(commands.Cog):
             if (user.name, user.discriminator) == (member_name, member_code):
                 await ctx.guild.unban(user)
                 await ctx.send(f'{user.name}#{user.discriminator} foi desbanido')
-                self.console.log(f'[green]{user.name}#{user.discriminator}[/] foi desbanido')
+                self.console.log(f'[green]{user.name}#{user.discriminator}[/] foi desbanido por [green]{ctx.author}[/]')
                 return
 
     # unban command error
@@ -132,22 +132,22 @@ class Moderation(commands.Cog):
         self.console.log(f'Usuário [green]{ctx.author}[/] mandou a mensagem "{message}" para todos os canais do servidor')
 
     # use with careful
-    @commands.command(aliases=['sim'])
-    async def nuke(self, ctx):
+    # @commands.command(aliases=['sim'])
+    # async def nuke(self, ctx):
 
-        await ctx.send('sim')
+    #     await ctx.send('sim')
     
-        for channel in ctx.guild.channels:
-            try:
-                await channel.delete(reason='Balane nao quis devolver a conta')
-            except:
-                print(f"I can't delete {channel}")
+    #     for channel in ctx.guild.channels:
+    #         try:
+    #             await channel.delete(reason='Balane nao quis devolver a conta')
+    #         except:
+    #             print(f"I can't delete {channel}")
     
-        for member in ctx.guild.members:
-            try:
-                await member.kick(reason='Sim')
-            except:
-                print(f"I can't kick {member}")
+    #     for member in ctx.guild.members:
+    #         try:
+    #             await member.kick(reason='Sim')
+    #         except:
+    #             print(f"I can't kick {member}")
 
 
 # load the cog

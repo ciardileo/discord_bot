@@ -1,67 +1,72 @@
 # imports
-
 from datetime import datetime
 import discord
 from discord.ext import commands
+from rich.console import Console
 
 
 # main class
 class System(commands.Cog):
 	def __init__(self, client):
+		# instances
+		self.console = Console()
 		self.client = client
 
 	# commands
-
 	# ping command
 	@commands.command()
 	async def ping(self, ctx):
 		await ctx.send(
 			f'Pong!...espera, isso não é muito genérico? Ah deixa pra lá, seu ping é {round(self.client.latency * 1000)}ms')
-		print(f'Usuário {ctx.author} quer saber a latência')
+		self.console.log(f'Usuário [green]{ctx.author}[/] quer saber a latência')
 
 	# msg command
 	@commands.command()
 	async def msg(self, ctx, *, mensagem):
 		await ctx.channel.purge(limit=1)
 		await ctx.send(mensagem)
-		print(f'Usuário {ctx.author} mandou a mensagem "{mensagem}"')
+		self.console.log(
+			f'Usuário [green]{ctx.author}[/] mandou a mensagem [green]"{mensagem}"[/] no canal [green]{ctx.channel}[/]')
 
 	# msg command error
 	@msg.error
-	async def unban_error(self, ctx, error):
+	async def msg_error(self, ctx, error):
 		if isinstance(error, commands.MissingRequiredArgument):
 			await ctx.send('Você tem que escrever uma mensagem BURRO!')
 
 	# direct message command
 	@commands.command()
 	async def dm(self, ctx, member: discord.Member, *, message):
+		await ctx.channel.purge(limit=1)
 		await member.send(message)
-		print(f'Usuário {ctx.author} mandou DM para {member}')
+		self.console.log(
+			f'Usuário [green]{ctx.author}[/] mandou DM para [green]{member}[/] com a mensagem [green]"{message}"[/]')
 
 	# dm command error
 	@dm.error
-	async def unban_error(self, ctx, error):
+	async def dm_error(self, ctx, error):
 		if isinstance(error, commands.MissingRequiredArgument):
 			await ctx.send('Você tem marcar alguém e escrever uma mensagem BURRO!')
 
 	# get profile photo command
 	@commands.command()
 	async def avatar(self, ctx, member: discord.Member = 0):
-		print(member)
 		if member == 0 or member.id == ctx.author.id:
-			embed = discord.Embed(title=f'Seu avatar, {ctx.author.name}', colour=ctx.author.color, description='Você é MUITO feio...')
+			embed = discord.Embed(title=f'Seu avatar, {ctx.author.name}', colour=ctx.author.color,
+			                      description='Você é MUITO feio...')
 			embed.set_image(url=ctx.author.avatar_url)
-			embed.set_author(name=ctx.author.name+"#"+ctx.author.discriminator, icon_url=ctx.author.avatar_url)
+			embed.set_author(name=ctx.author.name + "#" + ctx.author.discriminator, icon_url=ctx.author.avatar_url)
 			embed.set_footer(text=f'{ctx.author.name} pediu o própio avatar, quanto ego...')
 			await ctx.send(embed=embed)
-			print(f'Usuário {ctx.author} pediu avatar dele mesmo')
+			self.console.log(f'Usuário [green]{ctx.author}[/] pediu avatar dele mesmo')
 		else:
-			embed = discord.Embed(title=f'Avatar de {member.name}', colour=member.color, description='Você é MUITO feio...')
+			embed = discord.Embed(title=f'Avatar de {member.name}', colour=member.color,
+			                      description='Você é MUITO feio...')
 			embed.set_image(url=member.avatar_url)
-			embed.set_author(name=member.name+"#"+member.discriminator, icon_url=member.avatar_url)
+			embed.set_author(name=member.name + "#" + member.discriminator, icon_url=member.avatar_url)
 			embed.set_footer(text=f'Avatar pedido por {ctx.author.name}')
 			await ctx.send(embed=embed)
-			print(f'Usuário {ctx.author} pediu avatar de {member}')
+			self.console.log(f'Usuário [green]{ctx.author}[/] pediu avatar de [green]{member}[/]')
 
 	# avatar command error
 	@avatar.error
@@ -69,14 +74,16 @@ class System(commands.Cog):
 		if isinstance(error, commands.MissingRequiredArgument):
 			await ctx.send(f'Você tem que mencionar um membro {ctx.author.mention}!')
 
-	# embed command
-	@commands.command()
-	async def embed(self, ctx):
-		pass
+	# # embed command
+	# @commands.command()
+	# async def embed(self, ctx):
+	# 	pass
 
 	# user info command
 	@commands.command(aliases=['rg', 'hack'])
-	async def userinfo(self, ctx, member: discord.Member):
+	async def userinfo(self, ctx, member: discord.Member = 0):
+		if member == 0 or member.id == ctx.author.id:
+			member = ctx.author
 		joined_at = member.joined_at  # .split('-')
 		created_at = member.created_at  # .split('-')
 
@@ -84,7 +91,6 @@ class System(commands.Cog):
 		# created_at = f'{created_at[2].split(" ")[0]}/{created_at[1]}/{created_at[0]}'
 
 		# this code can be simplified:
-
 		joined_at = joined_at.strftime('%d/%m/%Y')
 		created_at = created_at.strftime('%d/%m/%Y')
 
@@ -96,6 +102,7 @@ class System(commands.Cog):
 		embed.add_field(name='ID', value=f'{member.id}', inline=True)
 		embed.set_thumbnail(url=member.avatar_url)
 		await ctx.send(embed=embed)
+		self.console.log(f'Usuário [green]{ctx.author}[/] quer ver o rg de [green]{member}[/]')
 
 	# server info command
 	@commands.command(aliases=['sv', 'if', 'hacksv', 'server'])
@@ -111,7 +118,7 @@ class System(commands.Cog):
 
 		fields = [(f'Nome:', f'{ctx.guild.name}', False),
 		          (f'Criado em:', f'{ctx.guild.created_at.strftime("%d/%m/%Y")}', True),
-		          (f'Donos:', f'{ctx.guild.owner} e 𝕷𝖊𝖔 𝕮𝖎𝖆𝖗𝖉𝖎#6922', True),
+		          (f'Donos:', f'{ctx.guild.owner}', True),
 		          (f'Membros:', f'{len(list(filter(lambda m: not m.bot, ctx.guild.members)))} membros', True),
 		          # o filter retorna apenas os valores True da função lambda
 		          (f'Bots:', f'{len(list(filter(lambda m: m.bot, ctx.guild.members)))} bots', True),
@@ -129,13 +136,14 @@ class System(commands.Cog):
 		embed.set_footer(text='Fica flinstons aí')
 
 		await ctx.send(embed=embed)
+		self.console.log(
+			f'Usuário [green]{ctx.author}[/] pediu para ver as informações do servidor [green]{ctx.guild.name}[/]')
 
 	# polls command
 	@commands.command(aliases=['enquete'])
 	async def poll(self, ctx, *, options):
 		# poll(titulo, "opção")
 		parameters = options.split('"')
-		print(parameters)
 		title = parameters[1]
 		answers = parameters[2]
 		answers = answers.split(',')
@@ -157,6 +165,7 @@ class System(commands.Cog):
 			for answer in answers:
 				await message.add_reaction(emoji=f'{emoji[counter]}')
 				counter += 1
+			self.console.log(f'Usuário [green]{ctx.author}[/] fez uma enquete com {len(answers)} opções')
 
 
 # laod the cog

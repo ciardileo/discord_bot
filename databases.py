@@ -15,6 +15,14 @@ judge_table = 'create table if not exists judge(' \
               'warns int(1)' \
               ');'
 
+server_config_table = 'create table if not exists sv_config(' \
+                      'server_id varchar(18) not null,' \
+                      'online_id varchar(18) default "0",' \
+                      'welcome_id varchar(18) default "0",' \
+                      'bye_id varchar(18) default "0",' \
+                      'log_id varchar(18) default "0"' \
+                      ');'
+
 
 def execute(command):
     cursor.execute(command)
