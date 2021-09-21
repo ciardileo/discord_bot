@@ -53,7 +53,7 @@ class System(commands.Cog):
 	async def avatar(self, ctx, member: discord.Member = 0):
 		if member == 0 or member.id == ctx.author.id:
 			embed = discord.Embed(title=f'Seu avatar, {ctx.author.name}', colour=ctx.author.color,
-			                      description='Você é MUITO feio...')
+								  description='Você é MUITO feio...')
 			embed.set_image(url=ctx.author.avatar_url)
 			embed.set_author(name=ctx.author.name + "#" + ctx.author.discriminator, icon_url=ctx.author.avatar_url)
 			embed.set_footer(text=f'{ctx.author.name} pediu o própio avatar, quanto ego...')
@@ -61,7 +61,7 @@ class System(commands.Cog):
 			self.console.log(f'Usuário [green]{ctx.author}[/] pediu avatar dele mesmo')
 		else:
 			embed = discord.Embed(title=f'Avatar de {member.name}', colour=member.color,
-			                      description='Você é MUITO feio...')
+								  description='Você é MUITO feio...')
 			embed.set_image(url=member.avatar_url)
 			embed.set_author(name=member.name + "#" + member.discriminator, icon_url=member.avatar_url)
 			embed.set_footer(text=f'Avatar pedido por {ctx.author.name}')
@@ -108,26 +108,26 @@ class System(commands.Cog):
 	@commands.command(aliases=['sv', 'if', 'hacksv', 'server'])
 	async def serverinfo(self, ctx):
 		embed = discord.Embed(title='Informações do server', description='O melhor servidor do discord',
-		                      timestamp=datetime.utcnow())
+							  timestamp=datetime.utcnow())
 		embed.set_thumbnail(url=ctx.guild.icon_url)
 
 		status = [len(list(filter(lambda m: str(m.status) == 'online', ctx.guild.members))),
-		          len(list(filter(lambda m: str(m.status) == 'idle', ctx.guild.members))),
-		          len(list(filter(lambda m: str(m.status) == 'dnd', ctx.guild.members))),
-		          len(list(filter(lambda m: str(m.status) == 'offline', ctx.guild.members)))]
+				  len(list(filter(lambda m: str(m.status) == 'idle', ctx.guild.members))),
+				  len(list(filter(lambda m: str(m.status) == 'dnd', ctx.guild.members))),
+				  len(list(filter(lambda m: str(m.status) == 'offline', ctx.guild.members)))]
 
 		fields = [(f'Nome:', f'{ctx.guild.name}', False),
-		          (f'Criado em:', f'{ctx.guild.created_at.strftime("%d/%m/%Y")}', True),
-		          (f'Donos:', f'{ctx.guild.owner}', True),
-		          (f'Membros:', f'{len(list(filter(lambda m: not m.bot, ctx.guild.members)))} membros', True),
-		          # o filter retorna apenas os valores True da função lambda
-		          (f'Bots:', f'{len(list(filter(lambda m: m.bot, ctx.guild.members)))} bots', True),
-		          (f'Membros Banidos:', f'{len(await ctx.guild.bans())} membros banidos', True),
-		          (f'Canais de Voz:', f'{len(ctx.guild.voice_channels)} canais de voz', True),
-		          (f'Canais de Texto:', f'{len(ctx.guild.text_channels)} canais de texto', True),
-		          (f'Status dos membros:', f'🟢   {status[0]}   🟡   {status[1]}   🔴   {status[2]}   ⚪   {status[3]}',
-		           True),
-		          (f'Cargos', f'{len(ctx.guild.roles)} cargos', True)]
+				  (f'Criado em:', f'{ctx.guild.created_at.strftime("%d/%m/%Y")}', True),
+				  (f'Donos:', f'{ctx.guild.owner}', True),
+				  (f'Membros:', f'{len(list(filter(lambda m: not m.bot, ctx.guild.members)))} membros', True),
+				  # o filter retorna apenas os valores True da função lambda
+				  (f'Bots:', f'{len(list(filter(lambda m: m.bot, ctx.guild.members)))} bots', True),
+				  (f'Membros Banidos:', f'{len(await ctx.guild.bans())} membros banidos', True),
+				  (f'Canais de Voz:', f'{len(ctx.guild.voice_channels)} canais de voz', True),
+				  (f'Canais de Texto:', f'{len(ctx.guild.text_channels)} canais de texto', True),
+				  (f'Status dos membros:', f'🟢   {status[0]}   🟡   {status[1]}   🔴   {status[2]}   ⚪   {status[3]}',
+				   True),
+				  (f'Cargos', f'{len(ctx.guild.roles)} cargos', True)]
 
 		for name, value, inline in fields:
 			embed.add_field(name=name, value=value, inline=inline)
@@ -158,7 +158,7 @@ class System(commands.Cog):
 			for answer in answers:
 				used += 1
 				embed.add_field(name=f'{emoji[counter - 1]} {answer.strip()}', value=f'Reaja com {counter}',
-				                inline=False)
+								inline=False)
 				counter += 1
 			message = await ctx.send(embed=embed)
 			counter = 0
