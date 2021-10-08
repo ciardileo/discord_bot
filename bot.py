@@ -12,7 +12,7 @@ console = Console()
 
 # bot
 intents = discord.Intents(messages=True, guilds=True, reactions=True, members=True, presences=True)
-client = commands.Bot(command_prefix='>', intents=intents)
+client = commands.Bot(command_prefix='c/', intents=intents)
 
 # status list
 status = cycle(['Fica flinstons aí que eu to chegando', 'Eu não pareço um sarigue?',

@@ -173,7 +173,7 @@ class Fun(commands.Cog):
 			self.console.log(f'Usuário [green]{ctx.author}[/] pediu meme {num}')
 
 	# rpg fight system
-	@commands.command(aliases=['luta'])
+	@commands.command(aliases=['luta', 'rinha', 'briga', 'treta', 'porrada'])
 	async def fight(self, ctx, member: discord.Member):
 		
 		if self.is_on_fight:
@@ -187,7 +187,7 @@ class Fun(commands.Cog):
 			await asyncio.sleep(8)
 			if self.accepted:
 				await ctx.send(
-					'Opções:\n`fugir` - sair da batalha\n`chute` - 20 a 40 de dano (70% de chance de acerto)\n`defesa` - +10 de hp\n`soco` - 10 de dano (100% de chance de acerto)\n`voadora` - 100 de dano (8% de chance de acerto)')
+					'Opções:\n`fugir` - sair da batalha\n`chute` - 20 a 40 de dano (70% de chance de acerto)\n`defesa` - +10 de hp\n`soco` - 10 de dano (100% de chance de acerto)\n`voadora` - HITKILL (8% de chance de acerto)')
 				await ctx.send(f'{ctx.author.mention} começa')
 				self.round = self.player1
 				self.console.log(f'Usuário [green]{ctx.author}[/] pediu uma luta com [green]{member}[/]')

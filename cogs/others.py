@@ -38,8 +38,14 @@ class Others(commands.Cog):
         embed.set_footer(text='Curte e Compartilha Tudo Irmão')
         embed.set_author(name='Super Memes Opressores', icon_url=ctx.author.guild.icon_url)
         await ctx.send(embed=embed)
-        
+
         self.console.log(f'Usuário [green]{ctx.author}[/] divulgou nossas redes sociais')
+
+    # events
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        if ">" in message.content and not "@" in message.content:
+            await message.channel.send('Irmão, se você queria me chamar, meu prefixo agora é "c/"')
 
 
 # load the cog

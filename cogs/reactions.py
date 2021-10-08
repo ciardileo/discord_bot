@@ -62,19 +62,16 @@ class Reactions(commands.Cog):
 
     @commands.Cog.listener()
     async def on_raw_reaction_add(self, payload):
-        if payload.bot:
-            pass
-        else:
-            self.reactions = db.fetchall('select * from reactions')
-            for item in self.reactions:
-                if str(payload.message_id) in item[0]:
-                    if payload.emoji.name == item[1]:
-                        guild = self.client.get_guild(payload.guild_id)
-                        role = guild.get_role(int(item[2]))
-                        await payload.member.add_roles(role, reason='Raw Reaction')
-                        self.console.log(
-                            f'[green]{payload.member}[/] reagiu a uma mensagem e ganhou o cargo [green]{role}[/]')
-                        break
+        self.reactions = db.fetchall('select * from reactions')
+        for item in self.reactions:
+            if str(payload.message_id) in item[0]:
+                if payload.emoji.name == item[1]:
+                    guild = self.client.get_guild(payload.guild_id)
+                    role = guild.get_role(int(item[2]))
+                    await payload.member.add_roles(role, reason='Raw Reaction')
+                    self.console.log(
+                        f'[green]{payload.member}[/] reagiu a uma mensagem e ganhou o cargo [green]{role}[/]')
+                    break
 
     @commands.Cog.listener()
     async def on_raw_reaction_remove(self, payload):
@@ -94,6 +91,16 @@ class Reactions(commands.Cog):
                     self.console.log(
                         f'[green]{member}[/] tirou a reação de uma mensagem e perdeu o cargo [green]{role}[/]')
                     break
+
+    # @commands.Cog.listener()
+    # async def on_message(self, message):
+    #     if message.author.id == 893150410137813083:
+    #         await message.add_reaction(emoji='🇷')
+    #         await message.add_reaction(emoji='🇺')
+    #         await message.add_reaction(emoji='🇮')
+    #         await message.add_reaction(emoji='🇲')
+    #         await message.add_reaction(emoji='🤣')
+    #         self.console.log(f"Bot ruim do ballani mandou a mensagem [green]{message.content}[/]")
 
 
 # loads the cog
