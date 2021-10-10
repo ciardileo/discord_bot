@@ -227,16 +227,21 @@ class Fun(commands.Cog):
 	# fight ranking
 	@commands.command()
 	async def ranking(self, ctx, tipo='wins'):
+		tipo = str(tipo).strip()
+		tipo_lb = str()
 		if tipo == 'wins':
 			tipo_lb = tipo.replace('wins', 'vitórias')
-		if tipo == 'defeats':
+		elif tipo == 'defeats':
 			tipo_lb = tipo.replace('defeats', 'derrotas')
-		if tipo == 'escapes':
+			print(tipo_lb)
+		elif tipo == 'escapes':
 			tipo_lb = tipo.replace('escapes', 'fugas')
-		if tipo == 'flyers':
+		elif tipo == 'flyers':
 			tipo_lb = tipo.replace('flyers', 'voadoras')
 		else:
 			tipo_lb = tipo.replace('matches', 'partidas')
+
+		print(tipo, tipo_lb)
 
 		if tipo == 'defeats':
 			ranking = db.fetchall(f'select player_id, wins, matches from fight_ranking')
@@ -253,18 +258,22 @@ class Fun(commands.Cog):
 				'Não temos jogadores no ranking o suficiente para mostrar, no mínimo 5 usuários devem ter jogado alguma partida')
 		else:
 			embed = Embed(title=f'Ranking de **{tipo_lb}**', description='Quem será o melhor? ou pior? sla fodase')
-			embed.add_field(name=f'<@{ranking[0][0]}> É O CAMPEÃO DE {tipo_lb} 👑',
+			champion = ctx.guild.get_member(int(ranking[0][0]))
+			embed.add_field(name=f'{champion.name} É O CAMPEÃO DE {tipo_lb} 👑',
 			                value=f'Está em primeiro com **{ranking[0][1]}** {tipo_lb}', inline=False)
-			embed.add_field(name=f'<@{ranking[1][0]}> está em 2° lugar com {ranking[1][1]} {tipo_lb}',
+			second = ctx.guild.get_member(int(ranking[1][0]))
+			embed.add_field(name=f'{second.name} está em 2° lugar com {ranking[1][1]} {tipo_lb}',
 			                value=f'Segundo lugar? Hmmm...Nada mal', inline=False)
-			embed.add_field(name=f'<@{ranking[2][0]}> está em 3° lugar com {ranking[2][1]} {tipo_lb}',
+			third = ctx.guild.get_member(int(ranking[2][0]))
+			embed.add_field(name=f'{third.name} está em 3° lugar com {ranking[2][1]} {tipo_lb}',
 			                value=f'Pelo menos entrou no pódio...', inline=False)
-			embed.add_field(name=f'<@{ranking[3][0]}> está em 4° lugar com {ranking[3][1]} {tipo_lb}',
+			fourth = ctx.guild.get_member(int(ranking[3][0]))
+			embed.add_field(name=f'{fourth.name} está em 4° lugar com {ranking[3][1]} {tipo_lb}',
 			                value=f'Dá pra se esforçar um pouco mais né?', inline=False)
-			embed.add_field(name=f'<@{ranking[4][0]}> está em 5° lugar com {ranking[4][1]} {tipo_lb}',
+			fifth = ctx.guild.get_member(int(ranking[4][0]))
+			embed.add_field(name=f'{fifth.name} está em 5° lugar com {ranking[4][1]} {tipo_lb}',
 			                value=f'Ou é falta de sorte, ou você é MUITO RUIM', inline=False)
 
-			champion = await ctx.guild.get_member(int(ranking[0][0]))
 			embed.set_thumbnail(url=champion.avatar_url)
 			embed.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
 
