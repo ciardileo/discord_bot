@@ -233,15 +233,12 @@ class Fun(commands.Cog):
 			tipo_lb = tipo.replace('wins', 'vitórias')
 		elif tipo == 'defeats':
 			tipo_lb = tipo.replace('defeats', 'derrotas')
-			print(tipo_lb)
 		elif tipo == 'escapes':
 			tipo_lb = tipo.replace('escapes', 'fugas')
 		elif tipo == 'flyers':
 			tipo_lb = tipo.replace('flyers', 'voadoras')
 		else:
 			tipo_lb = tipo.replace('matches', 'partidas')
-
-		print(tipo, tipo_lb)
 
 		if tipo == 'defeats':
 			ranking = db.fetchall(f'select player_id, wins, matches from fight_ranking')
