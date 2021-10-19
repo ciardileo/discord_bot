@@ -4,32 +4,32 @@ con = sql.connect('bot.db')
 cursor = con.cursor()
 
 reactions_table = 'create table if not exists reactions(' \
-                  'message_id char(18) not null,' \
-                  'reaction varchar(20),' \
-                  'role_id char(18)' \
-                  ');'
+				  'message_id char(18) not null,' \
+				  'reaction varchar(20),' \
+				  'role_id char(18)' \
+				  ');'
 
 judge_table = 'create table if not exists judge(' \
-              'user_id char(18) not null,' \
-              'mute_time varchar(6),' \
-              'warns int(1)' \
-              ');'
+			  'user_id char(18) not null,' \
+			  'mute_time varchar(6),' \
+			  'warns int(1)' \
+			  ');'
 
 server_config_table = 'create table if not exists sv_config(' \
-                      'server_id varchar(18) not null,' \
-                      'online_id varchar(18) default "0",' \
-                      'welcome_id varchar(18) default "0",' \
-                      'bye_id varchar(18) default "0",' \
-                      'log_id varchar(18) default "0"' \
-                      ');'
+					  'server_id varchar(18) not null,' \
+					  'online_id varchar(18) default "0",' \
+					  'welcome_id varchar(18) default "0",' \
+					  'bye_id varchar(18) default "0",' \
+					  'log_id varchar(18) default "0"' \
+					  ');'
 
 fight_ranking_table = 'create table if not exists fight_ranking(' \
-                      'player_id char(18) not null,' \
-                      'flyers int(3) default 0,' \
-                      'escapes int(3) default 0,' \
-                      'wins int(3) default 0,' \
-                      'matches int(3) default 0' \
-                      ');'
+					  'player_id char(18) not null,' \
+					  'flyers int(3) default 0,' \
+					  'escapes int(3) default 0,' \
+					  'wins int(3) default 0,' \
+					  'matches int(3) default 0' \
+					  ');'
 
 
 def execute(command):
@@ -62,6 +62,7 @@ def ranking_add(type, player_id):
 		execute(f'insert into fight_ranking (player_id, {type}) values ({str(player_id)}, 1)')
 
 
-
-
-
+def get_sv_config(sv_id):
+	configs = fetchall(f'select * from sv_config where server_id = {sv_id}')
+	configs = configs[0]
+	return configs

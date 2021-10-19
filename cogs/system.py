@@ -1,8 +1,12 @@
 # imports
+import time
 from datetime import datetime
 import discord
+import databases as db
 from discord.ext import commands
 from rich.console import Console
+from discord.ext.commands.core import has_permissions
+import asyncio
 
 
 # main class
@@ -11,6 +15,15 @@ class System(commands.Cog):
 		# instances
 		self.console = Console()
 		self.client = client
+
+		# setup instances
+		self.setup = False
+		self.user_setup = None
+		self.online_channel = None
+		self.bye_channel = None
+		self.welcome_channel = None
+		self.log_channel = None
+		self.step = int()
 
 	# commands
 	# ping command
@@ -105,7 +118,7 @@ class System(commands.Cog):
 		self.console.log(f'Usuário [green]{ctx.author}[/] quer ver o rg de [green]{member}[/]')
 
 	# server info command
-	@commands.command(aliases=['sv', 'if', 'hacksv', 'server'])
+	@commands.command(aliases=['sv', 'hacksv', 'server', 'svinfo'])
 	async def serverinfo(self, ctx):
 		embed = discord.Embed(title='Informações do server', description='O melhor servidor do discord',
 							  timestamp=datetime.utcnow())
@@ -166,6 +179,85 @@ class System(commands.Cog):
 				await message.add_reaction(emoji=f'{emoji[counter]}')
 				counter += 1
 			self.console.log(f'Usuário [green]{ctx.author}[/] fez uma enquete com {len(answers)} opções')
+
+	# server settings setup command
+	@has_permissions(administrator=True)
+	@commands.command()
+	async def setup(self, ctx):
+		self.setup = True
+		self.step = 0
+		self.user_setup = ctx.author
+		await ctx.channel.send(
+			f'Hora de configurar o servidor!\nMarque os canais em que a função será ativada ou escreva "0", para indicar que não quer ativar essa função')
+		time.sleep(5)
+		await ctx.channel.send(f'Qual canal você quer que eu mande uma notificação quando ficar online?')
+		await asyncio.sleep(8)
+		if self.online_channel is not None:
+			await ctx.channel.send(f'Qual canal você quer que eu mande mensagens de bem-vindo?')
+			self.step = 1
+			await asyncio.sleep(8)
+
+			if self.welcome_channel is not None:
+				await ctx.channel.send(f'Qual canal você quer que eu mande mensagens de adeus?')
+				self.step = 2
+				await asyncio.sleep(8)
+
+				if self.bye_channel is not None:
+					await ctx.channel.send(f'Qual canal você quer que eu mande os logs?')
+					self.step = 3
+					await asyncio.sleep(8)
+
+					if self.log_channel is not None:
+						await ctx.channel.send(f"Configuração do servidor completa 👍🏻 ")
+						self.step = 4
+
+						is_on_db = False
+						servers = db.fetchall('select server_id from sv_config')
+						for server in servers:
+							if int(server[0]) == ctx.channel.guild.id:
+								db.execute(
+									f'update sv_config set online_id = {int(self.online_channel)}, welcome_id = {int(self.welcome_channel)}, bye_id = {int(self.bye_channel)}, log_id = {int(self.log_channel)} where server_id = {ctx.channel.guild.id}')
+								is_on_db = True
+
+						if not is_on_db:
+							db.execute(
+								f'insert into sv_config values ({int(ctx.channel.guild.id)}, {int(self.online_channel)}, {int(self.welcome_channel)}, {int(self.bye_channel)}, {int(self.log_channel)})')
+
+		if self.step < 4:
+			await ctx.channel.send('Você demorou demais para responder. Saindo do modo de configuração...')
+
+		self.user_setup = None
+		self.log_channel = None
+		self.bye_channel = None
+		self.online_channel = None
+		self.welcome_channel = None
+		self.setup = False
+
+	# on message event
+	@commands.Cog.listener()
+	async def on_message(self, message):
+		if self.setup:
+			if message.author.id == self.user_setup.id:
+				if self.step == 0:
+					if message.content.startswith('<#'):
+						self.online_channel = int(message.content[2:-1])
+					if message.content == "0":
+						self.online_channel = 0
+				if self.step == 1:
+					if message.content.startswith('<#'):
+						self.welcome_channel = int(message.content[2:-1])
+					if message.content == "0":
+						self.welcome_channel = 0
+				if self.step == 2:
+					if message.content.startswith('<#'):
+						self.bye_channel = int(message.content[2:-1])
+					if message.content == "0":
+						self.bye_channel = 0
+				if self.step == 3:
+					if message.content.startswith('<#'):
+						self.log_channel = int(message.content[2:-1])
+					if message.content == "0":
+						self.log_channel = 0
 
 
 # laod the cog

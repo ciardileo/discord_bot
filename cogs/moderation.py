@@ -5,6 +5,7 @@ from discord.ext import commands
 from discord.ext.commands.core import has_permissions, bot_has_permissions
 import random
 from rich.console import Console
+import databases as db
 
 
 # main class
@@ -12,8 +13,6 @@ class Moderation(commands.Cog):
     def __init__(self, client):
         # instances
         self.client = client
-        self.welcome_channel = None
-        self.bye_channel = None
         self.console = Console()
 
     # commands
@@ -85,25 +84,30 @@ class Moderation(commands.Cog):
     # when someone join the server
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
+
+        configs = db.get_sv_config(str(member.guild.id))
+        channel = self.client.get_channel(int(configs[2]))
         
         welcome = ['Chega mais', 'Eai', 'Salve', 'Opa']
 
         embed = discord.Embed(title='👋🏻 Bem Vindo(a)',
-                              description=f'{random.choice(welcome)} {member.mention}, bem vindo(a) ao\n Super Gamers Opressores, leia as regras\n e se divirta!')
+                              description=f'{random.choice(welcome)} {member.mention}, bem vindo(a) ao\n Super Gamers Opressores, leia as regras\n e vai se fuder 😜!')
 
         embed.set_author(name=f'{member.display_name}#{member.discriminator}', icon_url=member.avatar_url)
         embed.set_thumbnail(url=member.avatar_url)
         embed.set_image(
             url="https://media.discordapp.net/attachments/823546618862108707/825399357675143226/Ednaldo.gif")
         embed.set_footer(text=f'ID do usuário: {member.id}. Fica flintons aí')
-        await self.welcome_channel.send(embed=embed)
+        await channel.send(embed=embed)
         self.console.log(f'[green]{member}[/] entrou no servidor [green]{member.guild}[/]')
 
     # when someone left the server
     @commands.Cog.listener()
     async def on_member_remove(self, member):
+        configs = db.get_sv_config(str(member.guild.id))
+        channel = self.client.get_channel(int(configs[3]))
 
-        await self.bye_channel.send(f'{member.mention} se juntou ao lado negro da força')
+        await channel.send(f'{member.mention} se juntou ao lado negro da força')
 
     # dm to all members
     @has_permissions()

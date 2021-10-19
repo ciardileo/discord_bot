@@ -8,7 +8,7 @@ from rich.console import Console
 
 
 # main class
-class Reactions(commands.Cog):
+class RPG(commands.Cog):
     def __init__(self, client):
         # instances
         self.client = client
@@ -16,4 +16,4 @@ class Reactions(commands.Cog):
 
 # loads the cog
 def setup(client):
-    client.add_cog(Reactions(client))
+    client.add_cog(RPG(client))

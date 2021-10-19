@@ -13,7 +13,7 @@ import databases as db
 
 # rename memes function
 def rename_memes():
-	memesdir = f'{os.environ["ONEDRIVE"].replace(os.sep, "/")}/Imagens/Saved Pictures/memes/videos'
+	memesdir = f'{os.environ["ONEDRIVE"].replace(os.sep, "/")}/ciardi/images/memes/videos'
 	counter = 1
 	sorted_memes = list()
 	new_memes = list()
@@ -255,19 +255,19 @@ class Fun(commands.Cog):
 				'Não temos jogadores no ranking o suficiente para mostrar, no mínimo 5 usuários devem ter jogado alguma partida')
 		else:
 			embed = Embed(title=f'Ranking de **{tipo_lb}**', description='Quem será o melhor? ou pior? sla fodase')
-			champion = ctx.guild.get_member(int(ranking[0][0]))
+			champion = self.client.get_user(int(ranking[0][0]))
 			embed.add_field(name=f'{champion.name} É O CAMPEÃO DE {tipo_lb} 👑',
 			                value=f'Está em primeiro com **{ranking[0][1]}** {tipo_lb}', inline=False)
-			second = ctx.guild.get_member(int(ranking[1][0]))
+			second = self.client.get_user(int(ranking[1][0]))
 			embed.add_field(name=f'{second.name} está em 2° lugar com {ranking[1][1]} {tipo_lb}',
 			                value=f'Segundo lugar? Hmmm...Nada mal', inline=False)
-			third = ctx.guild.get_member(int(ranking[2][0]))
+			third = self.client.get_user(int(ranking[2][0]))
 			embed.add_field(name=f'{third.name} está em 3° lugar com {ranking[2][1]} {tipo_lb}',
 			                value=f'Pelo menos entrou no pódio...', inline=False)
-			fourth = ctx.guild.get_member(int(ranking[3][0]))
+			fourth = self.client.get_user(int(ranking[3][0]))
 			embed.add_field(name=f'{fourth.name} está em 4° lugar com {ranking[3][1]} {tipo_lb}',
 			                value=f'Dá pra se esforçar um pouco mais né?', inline=False)
-			fifth = ctx.guild.get_member(int(ranking[4][0]))
+			fifth = self.client.get_user(int(ranking[4][0]))
 			embed.add_field(name=f'{fifth.name} está em 5° lugar com {ranking[4][1]} {tipo_lb}',
 			                value=f'Ou é falta de sorte, ou você é MUITO RUIM', inline=False)
 
@@ -283,6 +283,9 @@ class Fun(commands.Cog):
 	async def rank(self, ctx, member=None):
 		if member is None:
 			member = ctx.author
+		else:
+			member = member[3:-1]
+			member = self.client.get_user(int(member))
 
 		try:
 			ranking = db.fetchall(f'select * from fight_ranking where player_id = {member.id}')
@@ -295,8 +298,11 @@ class Fun(commands.Cog):
 			embed.add_field(name='Fugas', value=f'**{ranking[0][2]}**', inline=True)
 			embed.set_author(name=member, icon_url=member.avatar_url)
 			await ctx.channel.send(embed=embed)
+
+			self.console.log(f'[green]{ctx.author}[/] quer ver se ele é bom no soco')
 		except:
-			await ctx.channel.send('Você ainda não lutou nenhuma vez...tá com medinho?')
+			await ctx.channel.send("Você ainda não lutou, tá com medinho de perder?")
+			self.console.log(f'[green]{ctx.author}[/] quer ver se ele é bom de porrada sem mesmo ter lutado')
 
 	# fight verification
 	@commands.Cog.listener()
